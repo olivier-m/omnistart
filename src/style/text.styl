@@ -1,0 +1,318 @@
+//
+// Returns pixel size for rem or pixel value
+//
+get_px(size)
+    if unit(size) == 'px'
+        return size
+    if unit(size) == 'rem'
+        return unit(size * 10, 'px')
+
+//
+// Returns a rem size for pixel or rem value
+//
+get_rem(size)
+    if unit(size) is 'rem'
+        return size
+    if unit(size) is 'px'
+        return unit(size / 10, 'rem')
+
+//
+// Set rem size with a pixel fallback
+//
+remsize(args...)
+    if not current-property
+        error('remsize() must be used within a property')
+
+    p1 = ()
+    p2 = ()
+    _args = ()
+
+    -f(x)
+        if length(x) > 1
+            for _x in x
+                -f(_x)
+        else
+            push(_args, x)
+
+    for arg in arguments
+        -f(arg)
+
+    for arg in _args
+        if arg is a 'unit' and (unit(arg) == 'px' or unit(arg) == 'rem')
+            push(p1, get_px(arg))
+            push(p2, get_rem(arg))
+        else
+            push(p1, arg)
+            push(p2, arg)
+
+    if p1 != p2
+        add-property(current-property[0], p1)
+
+    p2
+
+//
+// Returns base line height
+//
+get_line_height()
+    return get_px(base_font_size) * line_height
+
+//
+// Add a fixed bottom margin on block
+//
+flow_block(font_size=base_font_size)
+    vertical_flow(font_size)
+    lh = get_line_height()
+    margin 0 0 get_px(lh) 0
+    margin 0 0 get_rem(lh) 0
+
+//
+// Add padding values (and calc value when needed)
+//
+padded_box(border=0)
+    p=get_line_height()
+    padding p - border
+
+    if (border > 0)
+        padding 'calc(%s - %s)' % (get_rem(p) border)
+    else
+        padding get_rem(p)
+
+
+//
+// Add computed line-height and top position to put content on baseline
+//
+vertical_flow(font_size=base_font_size)
+    min_line_height = 0.85
+    font_size = get_px(font_size)
+
+    // Base line height
+    line = get_line_height()
+
+    // Lines covered
+    covers = unit(ceil(font_size / line), '')
+
+    // See if we can use one line less
+    if covers > 1 and (covers - 1) * line / font_size >= min_line_height
+        covers = covers - 1
+
+    // Set line-height
+    lh = unit(round(covers * line / font_size, 5), '')
+    if lh is not line_height
+        line-height lh
+
+    // Move block on baseline
+    if font_size > line and line * covers != font_size
+        pxtop = (line * covers - font_size) / covers - 1px
+        position relative
+        top remsize(pxtop)
+
+
+html
+    font-size 62.5%
+
+    // IE9-IE11 math fixing. See http://bit.ly/1g4X0bX
+    // thanks to @guardian, @victorbritopro and @eQRoeil
+    font-size calc(1em * 0.625)
+
+body
+    // set body font-size in em (1.4em equiv "14px")
+    if not unit(base_font_size) is px
+        error('Base font size should be in px')
+
+    background-color color_base_bg
+    color color_base
+    font-family font_stack_common
+    font-size unit((base_font_size / 10), 'em')
+    line-height line_height
+
+
+// Flow blocks
+// ============================================================================
+$flow_block
+    flow_block()
+
+p
+ul
+ol
+dl
+blockquote
+td
+th
+label
+textarea
+table
+caption
+details
+figure
+    line-height line_height
+
+
+p
+ul
+ol
+dl
+blockquote
+address
+table
+hr
+form
+    @extend $flow_block
+
+//
+// Horizontal rule
+//
+hr
+    box-sizing content-box
+    border 0
+    border-top 1px solid color_gray_light
+    height 0
+    margin-top 0
+
+//
+// Lists
+//
+ul
+ol
+    padding-left 2em
+
+ul
+    list-style disc
+
+li
+    p
+    ul
+    ol
+        margin-top 0
+        margin-bottom 0
+
+dt
+    font-weight bold
+    margin 0
+
+dd
+    @extend $flow_block
+    padding 0
+    margin-left 2em
+
+    & > ul
+    & > ol
+        padding-left 1em
+
+//
+// Blockquotes
+//
+blockquote
+    margin-left 2em
+
+//
+// Figures
+//
+figure
+    @extend $flow_block
+    margin-left 2em
+    margin-right 2em
+
+//
+// Address
+//
+address
+    font-style italic
+
+
+// Headings
+// ============================================================================
+$heading
+    display block
+    font-weight normal
+    color color_gray_dark
+
+    &:first-child
+        margin-top 0
+
+for heading in heading_conf
+    {heading}, .{heading}
+        @extend $heading
+
+        _conf = heading_conf[heading]
+        for p in _conf
+            if p is font-size
+                font-size: remsize(_conf[p])
+                vertical_flow(@font-size)
+            else if p is _margin
+                if not _conf['margin']
+                    _margin = ()
+                    for s in _conf[p]
+                        push(_margin, s != 0 ? s * get_line_height() : 0)
+                    margin remsize(_margin)
+            else
+                {p} _conf[p]
+
+
+// Phrasing
+// ============================================================================
+
+//
+// Italic tags
+//
+em
+cite
+dfn
+i
+var
+    font-style italic
+
+//
+// Bold tags
+//
+b
+strong
+    font-weight bold
+
+//
+// Small tags
+//
+small
+    font-size 80%
+    line-height 1
+
+big
+    font-size 120%
+    line-height 1
+
+//
+// Images
+//
+img
+    height auto
+    vertical-align middle
+    border 0
+
+a:link img
+a:visited img
+    border 0
+
+//
+// Links
+//
+a
+    color color_link
+    background transparent
+    text-decoration none
+
+    &:active
+    &:hover
+        outline 0
+
+    &:focus
+        outline thin dotted color_link
+
+    &:visited
+        color color_link
+
+    &:hover
+    &:focus
+    &:active
+    &:visited:hover
+    &:visited:focus
+    &:visited:active
+        color: color_link_hover

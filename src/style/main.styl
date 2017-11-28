@@ -1,0 +1,241 @@
+// Configuration
+//
+color_base    ?= #2a2a2e
+color_base_bg ?= #fff
+
+color_gray         ?= #b1b1b3
+color_gray_dark    ?= #737373
+color_gray_darker  ?= #4a4a4f
+color_gray_light   ?= #d7d7db
+color_gray_lighter ?= #ededf0
+
+color_link       ?= #0a84ff
+color_link_hover ?= #0060df
+
+// Fonts and vertical distribution
+base_font_size  ?= 14px
+line_height     ?= 1.5
+
+font_stack_common    ?= sans-serif
+font_stack_monospace ?= monospace
+
+// Headings
+heading_conf := {
+    h1: {
+        font-size: 3.4rem,
+        font-weight: bold,
+        _margin: 2 0 1 0
+    },
+    h2: {
+        font-size: 2.4rem,
+        font-weight: bold,
+        _margin: 2 0 1 0
+    },
+    h3: {
+        font-size: 2.2rem,
+        _margin: 1 0 1 0
+    },
+    h4: {
+        font-size: 1.8rem,
+        _margin: 1 0 0 0
+    }
+    h5: {
+        font-size: 1.6rem,
+        _margin: 1 0 0 0
+    },
+    h6: {
+        font-size: 1.4rem,
+        _margin: 1 0 0 0
+    }
+}
+
+// Helpers
+//
+@require "./base"
+@require "./text"
+
+
+// Main styles
+//
+h2
+    font-weight normal
+    color color_gray_darker
+
+h3
+    font-weight normal
+    color color_gray_darker
+
+#nav
+    position sticky
+    z-index 1000
+    top 0
+    margin 0
+    padding 0.5rem
+    background color_gray_lighter
+    color color_gray_darker
+
+    ul
+      display flex
+      flex-direction row
+      justify-content flex-start
+      margin 0
+      padding 0
+      list-style none
+
+    li
+        display block
+        margin 0 0.5rem 0 0
+        padding 0
+
+        a
+            display flex
+            flex-direction row
+            justify-content flex-start
+            align-items center
+            color inherit
+            text-decoration none
+
+            &:hover, &:focus
+            &.active
+                color color_link
+
+            svg
+                height 20px
+
+.container
+    width 20rem
+    margin 0 auto 2rem
+    padding 2rem 0
+
+    @media screen and (min-width: unit(460 / 16, em))
+        width 42rem
+
+    @media screen and (min-width: unit(680 / 16, em))
+        width 64rem
+
+    @media screen and (min-width: unit(900 / 16, em))
+        width 86rem
+
+    @media screen and (min-width: unit(1120 / 16, em))
+        width 108rem
+
+    h2
+        text-align center
+
+.cards
+    display flex
+    flex-direction row
+    flex-wrap wrap
+    margin 0 -1rem
+    padding-bottom remsize(get_line_height())
+
+    a *
+        pointer-event none
+
+    h2, hr
+        width 100%
+
+    hr
+        margin 1rem
+
+    .card
+        display flex
+        align-items center
+        width 20rem
+        height 7rem
+        margin 1rem 1rem
+        flex-shrink 0
+        background #fff
+        border-radius 3px
+        box-shadow inset 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(12, 12, 13, 0.1)
+        text-decoration none
+
+        &:hover
+            box-shadow 1px 1px 6px rgba(0,0,0, 0.4)
+
+        img, svg
+            display block
+            width 32px
+            height 32px
+
+        img
+            border-radius 100px
+
+        svg
+            stroke color_gray
+
+        svg.loader
+            stroke color_gray_dark
+
+        span
+            display block
+
+        span:nth-child(1)
+            flex 0 0 40px
+            margin-left 1rem
+
+        span:nth-child(2)
+            flex 0 1 auto
+            margin-right 1rem
+            font-size remsize(1.2rem)
+
+.folders
+    column-width 20rem
+    column-gap 2rem
+
+.folder
+    page-break-inside avoid
+    width 18rem
+    margin-bottom remsize(get_line_height())
+
+    h3
+        font-size 1.6rem
+        vertical_flow(1.6rem)
+        margin 0 0 -1px 0
+        border-bottom 1px solid color_gray_lighter
+
+        span
+            font-size 1.2rem
+            &:after
+                content '\202F\203A\202F'
+
+            &:last-child
+                font-size 1.6rem
+                color color_base
+                &:after
+                    content ''
+
+    .card
+        display flex
+        align-items start
+        flex-shrink 0
+        text-decoration none
+        font-size 1.3rem
+        vertical_flow(1.3rem)
+
+        &:hover
+            background color_gray_lighter
+
+        img, svg
+            display block
+            margin-top 2px
+            width 16px
+            height 16px
+
+        img
+            border-radius 100px
+
+        svg
+            stroke color_gray
+
+        svg.loader
+            stroke color_gray_dark
+
+        span
+            display block
+
+        span:nth-child(1)
+            flex 0 0 20px
+
+        span:nth-child(2)
+            flex 0 1 auto

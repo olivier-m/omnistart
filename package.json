@@ -1,0 +1,32 @@
+{
+  "name": "omnistart-ext",
+  "version": "1.0.5",
+  "description": "OmniStart is a Mozilla Firefox add-on giving you an eye catching overview of your bookmarks from folders of your choice.",
+  "license": "MIT",
+  "private": true,
+  "author": {
+    "name": "Olivier Meunier",
+    "email": "olivier@neokraft.net"
+  },
+  "contributors": [],
+  "devDependencies": {
+    "axios": "^0.17.1",
+    "css-loader": "^0.28.7",
+    "eslint": "^4.11.0",
+    "eslint-plugin-vue": "^3.14.0",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "generate-json-webpack-plugin": "^0.2.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1",
+    "vue": "^2.5.8",
+    "vue-loader": "^13.5.0",
+    "vue-router": "^3.0.1",
+    "vue-svg-loader": "^0.4.0",
+    "vue-template-compiler": "^2.5.8",
+    "web-ext": "^2.2.2",
+    "webpack": "^3.8.1"
+  },
+  "dependencies": {
+    "favicon-getter": "^1.1.3"
+  }
+}
