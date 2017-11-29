@@ -1,6 +1,6 @@
 {
   "name": "omnistart-ext",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "OmniStart is a Mozilla Firefox add-on giving you an eye catching overview of your bookmarks from folders of your choice.",
   "license": "MIT",
   "private": true,
