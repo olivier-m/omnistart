@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "OmniStart",
   "version": "",
-  "description": "",
+  "description": "__MSG_manifest_description__",
   "author": "",
   "applications": {
     "gecko": {
@@ -27,7 +27,7 @@
     "tabs",
     "unlimitedStorage"
   ],
-  "content_scripts": [],
+  "default_locale": "en",
   "background": {
     "scripts": ["background.js"]
   },

@@ -1,0 +1,32 @@
+{
+  "manifest_description": {
+    "message": "Un panorama des favoris se trouvant dans les dossiers de votre choix."
+  },
+  "top_sites": {
+    "message": "Top sites"
+  },
+  "empty_list_message": {
+    "message": "Aucune favori à afficher, <a href=\"$1\">veuillez ajouter des dossiers</a>."
+  },
+  "all_bookmarks": {
+    "message": "Tous les favoris"
+  },
+  "preferences": {
+    "message": "Préférences"
+  },
+  "night_mode": {
+    "message": "Mode nuit"
+  },
+  "toogle_night_mode": {
+    "message": "Basculer le mode nuit"
+  },
+  "pref_top_sites_help": {
+    "message": "Sélectionnez des dossiers de favoris à afficher dans la section Top sites."
+  },
+  "pref_clear_icons": {
+    "message": "Effacer le cache des icones"
+  },
+  "pref_clear_icons_message": {
+    "message": "Toutes les icônes ont été effacées."
+  }
+}

@@ -1,27 +1,29 @@
 <template>
   <div class="container">
-    <h2>Settings</h2>
-    <h3>Top Sites</h3>
-    <p>Select bookmark folders to display in Top Sites section</p>
+    <h2>{{ _('preferences') }}</h2>
+    <h3>{{ _('top_sites') }}</h3>
+    <p>{{ _('pref_top_sites_help') }}</p>
     <div v-for="item in folders" :key="item.id">
       <label><input type="checkbox" v-model="prefered_folders"
         :value="item.id" @change="setFolders"
         > {{ item.path.map(x => x.title).join(" \u203A ") }}</label>
     </div>
 
-    <h3>Night mode</h3>
+    <h3>{{ _('night_mode') }}</h3>
     <div>
       <label><input type="checkbox" v-model="$parent.settings.night_mode" />
-        Toggle night mode</label></div>
+        {{ _('toogle_night_mode') }}</label></div>
   </div>
 </template>
 
 <script>
 import * as bookmarks from '../../lib/bookmarks';
 import * as settings from '../../lib/settings';
+import Localized from '../mixins/Localized.js';
 
 export default {
   name: 'bookmark-list',
+  mixins: [Localized],
   data() {
     return {
       folders: [],

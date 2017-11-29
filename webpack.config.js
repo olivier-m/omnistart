@@ -13,7 +13,6 @@ const dest_dir = path.resolve(__dirname, 'addon');
 const package_json = require('./package.json');
 const manifest_json = require('./webext-manifest.json');
 manifest_json.version = package_json.version;
-manifest_json.description = package_json.description;
 manifest_json.author = package_json.author.name;
 
 

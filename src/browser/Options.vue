@@ -1,13 +1,16 @@
 <template>
   <div>
-    <p><button @click="clearIcons">Clear all bookmark icons</button>
-    <span class="msg" v-if="removed">bookmarks cleared!</span></p>
+    <p><button @click="clearIcons">{{ _('pref_clear_icons') }}</button>
+    <span class="msg" v-if="removed">{{ _('pref_clear_icons_message') }}</span></p>
   </div>
 </template>
 
 <script>
+import Localized from '../app/mixins/Localized.js';
+
 export default {
   name: 'options',
+  mixins: [Localized],
   data() {
     return {
       removed: false

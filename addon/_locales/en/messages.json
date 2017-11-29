@@ -1,0 +1,32 @@
+{
+  "manifest_description": {
+    "message": "An eye catching overview of your bookmarks from folders of your choice."
+  },
+  "top_sites": {
+    "message": "Top Sites"
+  },
+  "empty_list_message": {
+    "message": "Nothing to show, <a href=\"$1\">add folders now</a>."
+  },
+  "all_bookmarks": {
+    "message": "All Bookmarks"
+  },
+  "preferences": {
+    "message": "Preferences"
+  },
+  "night_mode": {
+    "message": "Night Mode"
+  },
+  "toogle_night_mode": {
+    "message": "Toggle night mode"
+  },
+  "pref_top_sites_help": {
+    "message": "Select bookmark folders to display in Top Sites section."
+  },
+  "pref_clear_icons": {
+    "message": "Clear icon cache"
+  },
+  "pref_clear_icons_message": {
+    "message": "All icons removed!"
+  }
+}

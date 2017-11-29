@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2>Bookmarks</h2>
+    <h2>{{ _('all_bookmarks') }}</h2>
     <div class="folders">
       <div class="folder" v-for="folder in folders" :key="folder.id">
         <h3>
@@ -16,12 +16,14 @@
 
 <script>
 import BookmarkCard from '../components/BookmarkCard.vue';
-import BookmarkList from '../components/BookmarkList.js';
+import BookmarkList from '../mixins/BookmarkList.js';
+import Localized from '../mixins/Localized.js';
+
 
 export default {
   name: 'bookmarks',
   components: {BookmarkCard},
-  mixins: [BookmarkList],
+  mixins: [Localized, BookmarkList],
   data() {
     return {
       'folders': []

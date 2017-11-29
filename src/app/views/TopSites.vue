@@ -9,7 +9,7 @@
       <hr v-else />
     </div>
     <div v-if="folders === null">
-      <p>Nothing to show, <router-link :to="{name: 'settings'}" title="settings">add folders now</router-link></p>
+      <p v-html="_('empty_list_message', $router.resolve({'name': 'settings'}).href)"></p>
     </div>
   </div>
 </template>
@@ -17,12 +17,13 @@
 <script>
 import * as settings from '../../lib/settings';
 import BookmarkCard from '../components/BookmarkCard.vue';
-import BookmarkList from '../components/BookmarkList.js';
+import BookmarkList from '../mixins/BookmarkList.js';
+import Localized from '../mixins/Localized.js';
 
 export default {
   name: 'bookmark-list',
   components: {BookmarkCard},
-  mixins: [BookmarkList],
+  mixins: [Localized, BookmarkList],
   data() {
     return {
       folders: [],
