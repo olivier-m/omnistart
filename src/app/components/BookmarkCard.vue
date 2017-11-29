@@ -6,7 +6,7 @@
 
       <img v-if="item.icon && !item.loading"
         :src="item.icon"
-        @load="(evt) => {onIconLoaded(evt, item);}" @error="(evt) => {onIconError(evt, item);}" />
+        @load="onIconLoaded" @error="onIconError" />
     </span>
     <span>{{ getTitle() }}</span>
   </a>
@@ -16,9 +16,12 @@
 import BookmarkIcon from '../assets/bookmark.svg';
 import LoaderIcon from '../assets/loader.svg';
 
+import {EventBus} from '../bus.js';
 import {rgbToHsl} from '../../lib/colors';
 import {openTab} from '../../lib/tabs';
 import ColorThief from '../../vendor/color-thief';
+
+const COLOR_REG = /^rgba?\(([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)/;
 
 export default {
   name: 'bookmark-card',
@@ -34,6 +37,14 @@ export default {
       required: false,
       default: 0
     }
+  },
+
+  created() {
+    EventBus.$on('night-mode', this.setLinkColor);
+  },
+
+  beforeDestroy() {
+    EventBus.$off('night-mode', this.setLinkColor);
   },
 
   methods: {
@@ -64,27 +75,49 @@ export default {
       return title;
     },
 
-    onIconLoaded(event, item) {
-      if (!item.icon) {
+    onIconLoaded(event) {
+      if (!this.item.icon) {
         return;
       }
 
-      if (item.color === null) {
+      if (this.item.color === null) {
         let el = event.target;
         let color = (new ColorThief()).getColor(el);
-        item.color = color;
+        this.item.color = color;
         let s = {};
-        s[item.storage_key] = {'href': item.icon, 'color': item.color};
+        s[this.item.storage_key] = {'href': this.item.icon, 'color': this.item.color};
         browser.storage.local.set(s);
       }
 
-      let color = rgbToHsl(item.color[0], item.color[1], item.color[2]);
-      this.$el.style.color = `hsla(${color[0]}, ${color[1]}%, ${Math.min(30, color[2])}%, 1)`;
+      this.setLinkColor();
     },
 
     onIconError() {
       this.item.color = null;
       this.item.icon = null;
+    },
+
+    setLinkColor() {
+      if (this.item.color === null) {
+        return;
+      }
+
+      let bgColor = window.getComputedStyle(this.$el).backgroundColor;
+      let m = COLOR_REG.exec(bgColor);
+      if (m) {
+        bgColor = [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[2], 10)];
+      }
+      bgColor = rgbToHsl.apply(null, bgColor);
+
+      let color = rgbToHsl.apply(null, this.item.color);
+      let lum;
+      if (bgColor[2] > 50) {
+        lum = Math.min(30, color[2]);
+      }
+      else {
+        lum = Math.max(80, color[2]);
+      }
+      this.$el.style.color = `hsla(${color[0]}, ${color[1]}%, ${lum}%, 1)`;
     }
   }
 };

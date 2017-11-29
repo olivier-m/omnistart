@@ -86,6 +86,10 @@ h3
         display block
         margin 0 0.5rem 0 0
         padding 0
+        line-height 1
+
+        &.spacer
+            flex-grow 1
 
         a
             display flex
@@ -99,8 +103,14 @@ h3
             &.active
                 color color_link
 
-            svg
-                height 20px
+        svg
+            height 20px
+
+        .night-mode
+            cursor pointer
+
+            &.active
+                fill #d76e00
 
 .container
     width 20rem
@@ -145,7 +155,7 @@ h3
         height 7rem
         margin 1rem 1rem
         flex-shrink 0
-        background #fff
+        background color_base_bg
         border-radius 3px
         box-shadow inset 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(12, 12, 13, 0.1)
         text-decoration none
@@ -212,6 +222,7 @@ h3
         text-decoration none
         font-size 1.3rem
         vertical_flow(1.3rem)
+        background color_base_bg
 
         &:hover
             background color_gray_lighter
@@ -239,3 +250,42 @@ h3
 
         span:nth-child(2)
             flex 0 1 auto
+
+.nightmode
+    background-color color_base
+    color color_base_bg
+
+    a
+        color color_gray_light
+
+    h2, h3
+        color color_gray_lighter
+
+    #nav
+        background-color color_gray_darker
+        color color_gray_lighter
+
+        .night-mode
+            fill #ff9400
+
+        a:hover, a:focus, a.active
+            color #ff9400
+
+    .card
+        background-color color_base
+
+    .cards .card
+        box-shadow inset 0 0 0 1px rgba(170,170,170, 0.1), 0 1px 4px 0 rgba(158,158,158, 0.1)
+
+        &:hover
+            box-shadow 0 0 6px rgba(200,200,200, 0.4)
+
+    .folders
+        h3
+            border-bottom 1px solid color_gray_darker
+
+            span:last-child
+                color color_base_bg
+
+        .card:hover
+            background color_gray_darker

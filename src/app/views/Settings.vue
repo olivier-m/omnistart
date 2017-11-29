@@ -8,6 +8,11 @@
         :value="item.id" @change="setFolders"
         > {{ item.path.map(x => x.title).join(" \u203A ") }}</label>
     </div>
+
+    <h3>Night mode</h3>
+    <div>
+      <label><input type="checkbox" v-model="$parent.settings.night_mode" />
+        Toggle night mode</label></div>
   </div>
 </template>
 
