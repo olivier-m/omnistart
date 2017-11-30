@@ -3,8 +3,6 @@ import Vue from 'vue';
 
 import * as settings from '../lib/settings';
 
-// Event Bus
-export const EventBus = new Vue();
 
 // Settings Store
 export const SettingsStore = new Vue({
@@ -22,9 +20,6 @@ export const SettingsStore = new Vue({
   watch: {
     night_mode: function() {
       this.saveSettings();
-      window.setTimeout(() => {  // Not the best hack but works
-        EventBus.$emit('night-mode');
-      }, 50);
     }
   },
 

@@ -5,7 +5,7 @@
       <h2>{{ folder.title }}</h2>
 
       <bookmark-card class="card" v-for="item in folder.items" v-if="item.type == 'bookmark'"
-        :key="item.id" :item="item" shortTitle="25" />
+        :key="item.id" :item="item" :background="background" shortTitle="25" />
       <hr v-else />
     </div>
     <div v-if="folders === null">

@@ -1,5 +1,7 @@
 <template>
-  <a :href="item.url" :title="item.title || item.url" @click.prevent="openTab">
+  <a :href="item.url" :title="item.title || item.url"
+    :style="style"
+    @click.prevent="openTab">
     <span>
       <LoaderIcon v-if="item.loading" class="loader" />
       <BookmarkIcon v-if="!item.loading && !item.icon" />
@@ -16,16 +18,22 @@
 import BookmarkIcon from '../assets/bookmark.svg';
 import LoaderIcon from '../assets/loader.svg';
 
-import {EventBus} from '../bus.js';
 import {rgbToHsl} from '../../lib/colors';
 import {openTab} from '../../lib/tabs';
 import ColorThief from '../../vendor/color-thief';
 
-const COLOR_REG = /^rgba?\(([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)/;
-
 export default {
   name: 'bookmark-card',
   components: {BookmarkIcon, LoaderIcon},
+
+  data() {
+    return {
+      hsl: null,
+      hsl_bright: null,
+      hsl_dark: null,
+      style: ''
+    };
+  },
 
   props: {
     item: {
@@ -36,15 +44,18 @@ export default {
       type: Number,
       required: false,
       default: 0
+    },
+    background: {
+      type: String,
+      required: false,
+      default: 'bright'
     }
   },
 
-  created() {
-    EventBus.$on('night-mode', this.setLinkColor);
-  },
-
-  beforeDestroy() {
-    EventBus.$off('night-mode', this.setLinkColor);
+  watch: {
+    background: function() {
+      this.setLinkColor();
+    }
   },
 
   methods: {
@@ -102,22 +113,14 @@ export default {
         return;
       }
 
-      let bgColor = window.getComputedStyle(this.$el).backgroundColor;
-      let m = COLOR_REG.exec(bgColor);
-      if (m) {
-        bgColor = [parseInt(m[1], 10), parseInt(m[2], 10), parseInt(m[2], 10)];
+      if (this.hsl === null) {
+        this.hsl = rgbToHsl.apply(null, this.item.color);
+        this.hsl_bright = `hsla(${this.hsl[0]}, ${this.hsl[1]}%, ${Math.min(30, this.hsl[2])}%, 1)`;
+        this.hsl_dark = `hsla(${this.hsl[0]}, ${this.hsl[1]}%, ${Math.max(80, this.hsl[2])}%, 1)`;
       }
-      bgColor = rgbToHsl.apply(null, bgColor);
 
-      let color = rgbToHsl.apply(null, this.item.color);
-      let lum;
-      if (bgColor[2] > 50) {
-        lum = Math.min(30, color[2]);
-      }
-      else {
-        lum = Math.max(80, color[2]);
-      }
-      this.$el.style.color = `hsla(${color[0]}, ${color[1]}%, ${lum}%, 1)`;
+      let color = this.background == 'bright' ? this.hsl_bright : this.hsl_dark;
+      this.style = `color: ${color};`;
     }
   }
 };

@@ -8,7 +8,7 @@
            v-if="(p.id != 'menu________' || folder.path.length == 1)">{{ p.title }}</span>
         </h3>
         <bookmark-card class="card" v-for="item in folder.items" v-if="item.type == 'bookmark'"
-        :key="item.id" :item="item" shortTitle="25" />
+        :key="item.id" :item="item" :background="background" shortTitle="25" />
       </div>
     </div>
   </div>

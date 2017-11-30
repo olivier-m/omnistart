@@ -11,7 +11,7 @@
 
     <h3>{{ _('night_mode') }}</h3>
     <div>
-      <label><input type="checkbox" v-model="$parent.settings.night_mode" />
+      <label><input type="checkbox" v-model="settings.night_mode" />
         {{ _('toogle_night_mode') }}</label></div>
   </div>
 </template>
@@ -20,6 +20,7 @@
 import * as bookmarks from '../../lib/bookmarks';
 import * as settings from '../../lib/settings';
 import Localized from '../mixins/Localized.js';
+import {SettingsStore} from '../bus.js';
 
 export default {
   name: 'bookmark-list',
@@ -27,7 +28,8 @@ export default {
   data() {
     return {
       folders: [],
-      prefered_folders: []
+      prefered_folders: [],
+      settings: SettingsStore
     };
   },
 

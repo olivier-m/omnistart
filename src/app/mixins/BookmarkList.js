@@ -2,8 +2,15 @@
 
 import * as bookmarks from '../../lib/bookmarks';
 import {fetchFavicon} from '../../lib/favicon';
+import {SettingsStore} from '../bus.js';
 
 export default {
+  computed: {
+    background() {
+      return SettingsStore.night_mode ? 'dark' : 'bright';
+    }
+  },
+
   methods: {
     loadBookmarks: async function(filter) {
       filter = filter || (x => x);
