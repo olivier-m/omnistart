@@ -38,7 +38,7 @@ source-watch:
 	$(WEBPACK) --watch --progress
 
 source-zip: clean
-	test -d web-ext-artifacts || mkdir web-ext-artifacts
+	test -d web-ext-artifacts || mkdir web-ext-artifacts
 	set -e ;\
 	version=$$(cat package.json | jq -r '.version') ;\
 	zip -r9 web-ext-artifacts/sources-$$version.zip \
