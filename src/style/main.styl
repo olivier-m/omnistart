@@ -1,59 +1,24 @@
 // Configuration
 //
-color_base    ?= #2a2a2e
-color_base_bg ?= #fff
+$color_base    ?= #2a2a2e
+$color_base_bg ?= #fff
 
-color_gray         ?= #b1b1b3
-color_gray_dark    ?= #737373
-color_gray_darker  ?= #4a4a4f
-color_gray_light   ?= #d7d7db
-color_gray_lighter ?= #ededf0
+$color_gray         ?= #b1b1b3
+$color_gray_dark    ?= #737373
+$color_gray_darker  ?= #4a4a4f
+$color_gray_light   ?= #d7d7db
+$color_gray_lighter ?= #ededf0
 
-color_link       ?= #0a84ff
-color_link_hover ?= #0060df
+$color_link       ?= #0a84ff
+$color_link_hover ?= #0060df
 
 // Fonts and vertical distribution
-base_font_size  ?= 14px
-line_height     ?= 1.5
+$base_font_size  ?= 14px
+$line_height     ?= 1.5
 
-font_stack_common    ?= sans-serif
-font_stack_monospace ?= monospace
 
-// Headings
-heading_conf := {
-    h1: {
-        font-size: 3.4rem,
-        font-weight: bold,
-        _margin: 2 0 1 0
-    },
-    h2: {
-        font-size: 2.4rem,
-        font-weight: bold,
-        _margin: 2 0 1 0
-    },
-    h3: {
-        font-size: 2.2rem,
-        _margin: 1 0 1 0
-    },
-    h4: {
-        font-size: 1.8rem,
-        _margin: 1 0 0 0
-    }
-    h5: {
-        font-size: 1.6rem,
-        _margin: 1 0 0 0
-    },
-    h6: {
-        font-size: 1.4rem,
-        _margin: 1 0 0 0
-    }
-}
-
-// Helpers
-//
-@require "./base"
-@require "./text"
-
+@require "sunrise-css/src/core/base"
+@require "sunrise-css/src/core/form-fields"
 
 // Main styles
 //
@@ -71,8 +36,8 @@ h3
     top 0
     margin 0
     padding 0.5rem
-    background color_gray_lighter
-    color color_gray_darker
+    background $color_gray_lighter
+    color $color_gray_darker
 
     ul
       display flex
@@ -101,7 +66,7 @@ h3
 
             &:hover, &:focus
             &.active
-                color color_link
+                color $color_link
 
         svg
             height 20px
@@ -155,7 +120,7 @@ h3
         height 7rem
         margin 1rem 1rem
         flex-shrink 0
-        background color_base_bg
+        background $color_base_bg
         border-radius 3px
         box-shadow inset 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 4px 0 rgba(12, 12, 13, 0.1)
         text-decoration none
@@ -172,10 +137,10 @@ h3
             border-radius 100px
 
         svg
-            stroke color_gray
+            stroke $color_gray
 
         svg.loader
-            stroke color_gray_dark
+            stroke $color_gray_dark
 
         span
             display block
@@ -187,7 +152,7 @@ h3
         span:nth-child(2)
             flex 0 1 auto
             margin-right 1rem
-            font-size remsize(1.2rem)
+            font-size 1.3rem
 
 .folders
     column-width 20rem
@@ -200,9 +165,10 @@ h3
 
     h3
         font-size 1.6rem
-        vertical_flow(1.6rem)
+        vertical_flow(@font-size)
+        line-height $line_height
         margin 0 0 -1px 0
-        border-bottom 1px solid color_gray_lighter
+        border-bottom 1px solid $color_gray_lighter
 
         span
             font-size 1.2rem
@@ -211,7 +177,7 @@ h3
 
             &:last-child
                 font-size 1.6rem
-                color color_base
+                color $color_base
                 &:after
                     content ''
 
@@ -222,10 +188,10 @@ h3
         text-decoration none
         font-size 1.3rem
         vertical_flow(1.3rem)
-        background color_base_bg
+        background $color_base_bg
 
         &:hover
-            background color_gray_lighter
+            background $color_gray_lighter
 
         img, svg
             display block
@@ -237,10 +203,10 @@ h3
             border-radius 100px
 
         svg
-            stroke color_gray
+            stroke $color_gray
 
         svg.loader
-            stroke color_gray_dark
+            stroke $color_gray_dark
 
         span
             display block
@@ -252,21 +218,21 @@ h3
             flex 0 1 auto
 
 .nightmode
-    background-color color_base
-    color color_base_bg
+    background-color $color_base
+    color $color_base_bg
 
     a
-        color color_gray_light
+        color $color_gray_light
 
         &:hover, &:focus
-            color color_gray_lighter
+            color $color_gray_lighter
 
     h2, h3
-        color color_gray_lighter
+        color $color_gray_lighter
 
     #nav
-        background-color color_gray_darker
-        color color_gray_lighter
+        background-color $color_gray_darker
+        color $color_gray_lighter
 
         .night-mode
             fill #ff9400
@@ -275,7 +241,7 @@ h3
             color #ff9400
 
     .card
-        background-color color_base
+        background-color $color_base
 
     .cards .card
         box-shadow inset 0 0 0 1px rgba(170,170,170, 0.1), 0 1px 4px 0 rgba(158,158,158, 0.1)
@@ -285,10 +251,10 @@ h3
 
     .folders
         h3
-            border-bottom 1px solid color_gray_darker
+            border-bottom 1px solid $color_gray_darker
 
             span:last-child
-                color color_base_bg
+                color $color_base_bg
 
         .card:hover
-            background color_gray_darker
+            background $color_gray_darker
