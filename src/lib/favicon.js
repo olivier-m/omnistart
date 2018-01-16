@@ -1,17 +1,33 @@
 'use strict';
 
-import axios from 'axios';
+const GET = function(url) {
+  return fetch(url, {
+    method: 'GET',
+    cache: 'no-store',
+    redirect: 'follow',
+    referrerPolicy: 'origin'
+  });
+};
 
-const request = axios.create({
-  'method': 'GET',
-  'timeout': 8000,
-});
+const fetchPage = async function(url) {
+  let response = await GET(url);
 
-request.interceptors.request.use(config => {
-  // Prevent HTTP basic authentication popup
-  config.headers['Authorization'] = '--ignore--';
-  return config;
-});
+  if (parseInt(response.status / 100) != 2) {
+    throw new Error(`Invalid status for ${url} (${response.status})`);
+  }
+
+  let mime = response.headers.get('content-type');
+  if (!mime || !mime.includes('text/html')) {
+    throw new Error(`Invalid content-type for ${url} (${mime})`);
+  }
+
+  let doc = await response.text();
+  let parser = new DOMParser();
+  return {
+    response: response,
+    doc: parser.parseFromString(doc, 'text/html')
+  };
+};
 
 
 const linkTypes = [
@@ -22,8 +38,7 @@ const linkTypes = [
 ];
 
 
-const bufferToCanvas = function(data, mimetype) {
-  let blob = new Blob([data], {type: mimetype});
+const blobToCanvas = function(blob) {
   let imgURL = URL.createObjectURL(blob);
   let img = new Image();
 
@@ -73,11 +88,11 @@ const resizeCanvas = function(original, maxSize) {
 };
 
 
-const findFaviconInResponse = function(response) {
-  let nodes = response.data.querySelectorAll(linkTypes.join(','));
+const findFaviconInResponse = function(doc, url) {
+  let nodes = doc.querySelectorAll(linkTypes.join(','));
 
   let result = [{
-    'href': (new URL('/favicon.ico', response.request.responseURL)).href,
+    'href': (new URL('/favicon.ico', url)).href,
     'size': [32, 32]
   }];
 
@@ -94,7 +109,7 @@ const findFaviconInResponse = function(response) {
       default_size = 64;
     }
 
-    href = (new URL(href, response.request.responseURL)).href;
+    href = (new URL(href, url)).href;
     let sizes = (node.getAttribute('sizes') || `${default_size}x${default_size}`).split(' ');
     let size = sizes.map(x => x.split('x', 2)).map(x => {
       return x.map(x => parseInt(x, 10) || default_size);
@@ -108,31 +123,32 @@ const findFaviconInResponse = function(response) {
 
 
 const fetchIconCanvas = async function(href) {
-  let r = await request.get(href, {
-    'responseType': 'arraybuffer'
-  });
-
-  let mimetype = r.headers['content-type'];
-  href = r.request.responseURL;
-
-  if (href.match(/\.ico$/)) {
-    mimetype = 'image/vnd.microsoft.icon';
+  let response = await GET(href);
+  if (parseInt(response.status / 100) != 2) {
+    throw new Error('Invalid status code');
   }
 
-  if (mimetype.indexOf('image/') !== 0) {
+  let mime = response.headers.get('content-type');
+  href = response.url;
+
+  if (href.match(/\.ico$/)) {
+    mime = 'image/vnd.microsoft.icon';
+  }
+
+  if (mime.indexOf('image/') !== 0) {
     throw new Error(`${href} is not an image`);
   }
 
-  return await bufferToCanvas(r.data, mimetype);
+  let blob = await response.blob();
+  return await blobToCanvas(blob);
 };
 
 
 export const fetchFavicon = async function(url) {
   try {
-    let r = await request.get(url, {
-      'responseType': 'document'
-    });
-    let icons = findFaviconInResponse(r);
+    let r = await fetchPage(url);
+
+    let icons = findFaviconInResponse(r.doc, r.response.url);
     let icon = icons.shift();
 
     let loop = async function(i) {

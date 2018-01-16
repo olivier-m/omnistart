@@ -10,7 +10,6 @@
   },
   "contributors": [],
   "devDependencies": {
-    "axios": "^0.17.1",
     "css-loader": "^0.28.7",
     "eslint": "^4.11.0",
     "eslint-plugin-vue": "^3.14.0",
